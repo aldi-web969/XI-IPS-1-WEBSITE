@@ -1087,10 +1087,10 @@ body::after {
     background-size: 70px 70px;
     mask-image: linear-gradient(to bottom, transparent, black 15%, black 80%, transparent);
     -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 80%, transparent);
-    animation: gridMove 28s linear infinite;
+    animation: pageGridMove 28s linear infinite;
 }
 
-@keyframes gridMove {
+@keyframes pageGridMove {
     from { transform: translate3d(0, 0, 0); }
     to { transform: translate3d(70px, 70px, 0); }
 }
@@ -1231,8 +1231,40 @@ body::after {
 .roulette-pointer { position:absolute; z-index:8; top:calc(50% - 175px); left:50%; transform:translateX(-50%); color:#fff; font-size:24px; text-shadow:0 0 16px rgba(255,255,255,.65); filter:drop-shadow(0 0 9px rgba(34,211,238,.65)); }
 .roulette-wheel { width:min(360px,72vw); aspect-ratio:1; position:relative; border-radius:50%; border:8px solid rgba(255,255,255,.12); background:conic-gradient(from -6.66deg,#8b5cf6 0 13.33deg,#06b6d4 13.33deg 26.66deg,#ec4899 26.66deg 39.99deg,#6366f1 39.99deg 53.32deg,#14b8a6 53.32deg 66.65deg,#a855f7 66.65deg 79.98deg,#0891b2 79.98deg 93.31deg,#db2777 93.31deg 106.64deg,#7c3aed 106.64deg 119.97deg,#0e7490 119.97deg 133.3deg,#c026d3 133.3deg 146.63deg,#4f46e5 146.63deg 159.96deg,#0f766e 159.96deg 173.29deg,#9333ea 173.29deg 186.62deg,#be185d 186.62deg 199.95deg,#2563eb 199.95deg 213.28deg,#0d9488 213.28deg 226.61deg,#7e22ce 226.61deg 239.94deg,#e11d48 239.94deg 253.27deg,#1d4ed8 253.27deg 266.6deg,#0f766e 266.6deg 279.93deg,#a21caf 279.93deg 293.26deg,#6d28d9 293.26deg 306.59deg,#be123c 306.59deg 319.92deg,#1e40af 319.92deg 333.25deg,#0f766e 333.25deg 346.58deg,#9333ea 346.58deg 359.91deg); box-shadow:0 0 55px rgba(124,58,237,.25), inset 0 0 45px rgba(0,0,0,.28); transition:transform 2.4s cubic-bezier(.12,.72,.15,1); z-index:2; }
 .roulette-wheel::before { content:""; position:absolute; inset:7px; border-radius:50%; border:1px solid rgba(255,255,255,.22); box-shadow:inset 0 0 0 1px rgba(0,0,0,.18); }
-.wheel-labels { position:absolute; inset:0; z-index:3; }
-.wheel-labels span { position:absolute; left:50%; top:50%; width:74px; transform:rotate(var(--angle)) translateY(-142px) rotate(calc(var(--angle) * -1)); transform-origin:center; text-align:center; color:rgba(255,255,255,.72); font-size:7px; font-weight:800; text-shadow:0 1px 3px rgba(0,0,0,.55); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.wheel-labels {
+    position:absolute;
+    inset:0;
+    z-index:3;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+}
+
+.wheel-labels span {
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:clamp(54px, 18%, 78px);
+    transform:
+        translate(-50%, -50%)
+        rotate(var(--angle))
+        translateY(calc(-1 * var(--label-radius, 41%)))
+        rotate(calc(-1 * var(--angle)));
+    transform-origin:center center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#fff;
+    font-size:clamp(7px, 1.25vw, 11px);
+    line-height:1.1;
+    font-weight:800;
+    text-shadow:0 1px 8px rgba(0,0,0,.85);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    padding:3px 4px;
+}
 .wheel-center { position:absolute; z-index:5; inset:50%; width:105px; height:105px; transform:translate(-50%,-50%); display:grid; place-items:center; align-content:center; border-radius:50%; background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.2),transparent 28%),linear-gradient(145deg,#16112e,#071d2d); border:2px solid rgba(255,255,255,.2); box-shadow:0 0 32px rgba(34,211,238,.22),inset 0 0 24px rgba(139,92,246,.18); }
 .wheel-center strong { font-family:"Plus Jakarta Sans",sans-serif; font-size:28px; line-height:1; }
 .wheel-center small { margin-top:5px; color:#aeb7ce; font-size:8px; font-weight:800; letter-spacing:2px; }
@@ -1265,44 +1297,27 @@ body::after {
 @media (max-width:520px) { .spin-actions { grid-template-columns:1fr; } .roulette-wheel { width:300px; } .wheel-labels span { transform:rotate(var(--angle)) translateY(-118px) rotate(calc(var(--angle) * -1)); } .roulette-pointer { top:calc(50% - 150px); } .roulette-wrap { min-height:350px; } .draw-panel { min-height:245px; } }
 
 
-/* ===== FIX POSISI NAMA PADA AURORA ROULETTE ===== */
-.roulette-wheel {
-    position: relative;
-    overflow: hidden;
-}
-
-.wheel-labels {
-    position: absolute;
-    inset: 0;
+/* ===== FINAL GITHUB PAGES POLISH ===== */
+html, body {
     width: 100%;
-    height: 100%;
-    pointer-events: none;
+    min-width: 0;
 }
 
-.wheel-labels span {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: clamp(54px, 10%, 78px);
-    transform:
-        translate(-50%, -50%)
-        rotate(var(--angle))
-        translateY(calc(-1 * var(--label-radius, 41%)))
-        rotate(calc(-1 * var(--angle)));
-    transform-origin: center center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding: 3px 4px;
-    color: #fff;
-    font-size: clamp(7px, 1.25vw, 11px);
-    line-height: 1.1;
-    font-weight: 700;
-    text-shadow: 0 1px 8px rgba(0,0,0,.85);
+img, svg, video {
+    max-width: 100%;
+    height: auto;
+}
+
+button, select {
+    font: inherit;
+}
+
+.roulette-wheel {
+    isolation: isolate;
+}
+
+.wheel-center {
+    pointer-events: none;
 }
 
 @media (max-width: 760px) {
@@ -1310,5 +1325,19 @@ body::after {
         width: 52px;
         font-size: 7px;
         --label-radius: 39%;
+    }
+}
+
+@media (max-width: 430px) {
+    .roulette-wheel {
+        width: min(300px, 78vw);
+    }
+
+    .roulette-pointer {
+        top: calc(50% - 150px);
+    }
+
+    .roulette-wrap {
+        min-height: 350px;
     }
 }
